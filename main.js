@@ -1,9 +1,8 @@
-const sprites = new Image(); // Criando uma imagem na memória
+const sprites = new Image(); 
 sprites.src = './sprites/sprites.png';
 
 const canvas = document.querySelector("canvas")
-const context = canvas.getContext('2d'); // dar o contexto de 2d para o canvas
-
+const context = canvas.getContext('2d'); 
 
 const flappyBird = {
     sourceX: 0,
@@ -13,13 +12,13 @@ const flappyBird = {
     x: 10,
     y: 50,
 
-    desenha(){
+    draw(){
         context.drawImage(
-            sprites,  //image
-            flappyBird.sourceX, flappyBird.sourceY,     //spriteX, spriteY
-            flappyBird.width, flappyBird.height,        //sWidth, sHeight -> tamanho
-            flappyBird.x, flappyBird.y,                 //dx, dy,
-            flappyBird.width, flappyBird.height         //dWidth, dHeight  
+            sprites, 
+            flappyBird.sourceX, flappyBird.sourceY,     
+            flappyBird.width, flappyBird.height,       
+            flappyBird.x, flappyBird.y,               
+            flappyBird.width, flappyBird.height         
         );    
     }
 }
@@ -32,21 +31,21 @@ const floor = {
     x: 0,
     y: canvas.height - 112,
 
-    desenha(){
+    draw(){
         context.drawImage(
-            sprites,  //image
-            floor.sourceX, floor.sourceY,     //spriteX, spriteY
-            floor.width, floor.height,        //sWidth, sHeight -> tamanho
-            floor.x, floor.y,                 //dx, dy, 
-            floor.width, floor.height         //dWidth, dHeight  
+            sprites,  
+            floor.sourceX, floor.sourceY,     
+            floor.width, floor.height,        
+            floor.x, floor.y,                  
+            floor.width, floor.height         
         );    
 
         context.drawImage(
-            sprites,  //image
-            floor.sourceX, floor.sourceY,     //spriteX, spriteY
-            floor.width, floor.height,        //sWidth, sHeight -> tamanho
-            (floor.x + floor.width), floor.y, //dx, dy,
-            floor.width, floor.height         //dWidth, dHeight  
+            sprites,  
+            floor.sourceX, floor.sourceY,     
+            floor.width, floor.height,       
+            (floor.x + floor.width), floor.y, 
+            floor.width, floor.height        
         );    
     }
 }
@@ -59,24 +58,24 @@ const background = {
     x: 0,
     y: canvas.height - 205,
 
-    desenha(){
+    draw(){
         context.fillStyle = '#70c5ce'
-        context.fillRect(0, 0, canvas.width, canvas.height)//o "0,0" é de onde vai começar e canvas width e heigth é de onde vai preencher
+        context.fillRect(0, 0, canvas.width, canvas.height)
 
         context.drawImage(
-            sprites,  //image
-            background.sourceX, background.sourceY,     //spriteX, spriteY
-            background.width, background.height,        //sWidth, sHeight -> tamanho
-            background.x, background.y,                 //dx, dy, 
-            background.width, background.height         //dWidth, dHeight  
+            sprites,  
+            background.sourceX, background.sourceY,     
+            background.width, background.height,        
+            background.x, background.y,           
+            background.width, background.height       
         );  
 
         context.drawImage(
             sprites,  //image
-            background.sourceX, background.sourceY,     //spriteX, spriteY
-            background.width, background.height,        //sWidth, sHeight -> tamanho
-            (background.x + background.width), background.y,                 //dx, dy, 
-            background.width, background.height         //dWidth, dHeight  
+            background.sourceX, background.sourceY,  
+            background.width, background.height,      
+            (background.x + background.width), background.y,           
+            background.width, background.height     
         );    
     }
 }
@@ -84,10 +83,10 @@ const background = {
 
 function loop() {
 
-    background.desenha();
-    flappyBird.desenha(); // Funciona como se fosse um fps, desenha o flappyBird toda vez que a função é chamada.
-    floor.desenha();
-    requestAnimationFrame(loop); //desenha de forma infinita
+    background.draw();
+    flappyBird.draw(); 
+    floor.draw();
+    requestAnimationFrame(loop); 
 }
 
 loop();
