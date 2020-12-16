@@ -1,6 +1,9 @@
 const sprites = new Image(); 
 sprites.src = './sprites/sprites.png';
 
+const sound_HIT = new Audio();
+sound_HIT.src = './effects/hit.wav';
+
 const canvas = document.querySelector("canvas")
 const context = canvas.getContext('2d'); 
 
@@ -8,23 +11,24 @@ function fazColisao(flappyBird, floor){
     const flappyBirdY = flappyBird.y + flappyBird.height;
     const floorY = floor.y;
 
-    if(flappyBirdY >= floorY){
+    if(flappyBirdY >= floorY  ){
         return true;
     }
-    else{
-        return false
-    }
+    
+    
+    return false
+    
 }
 
 
 
 const floor = {
     sourceX: 0,
-    sourceY: 600,
+    sourceY: 608,
     width: 224,
     height: 112,
     x: 0,
-    y: canvas.height - 110,
+    y: canvas.height - 112,
 
     draw(){
         context.drawImage(
@@ -96,7 +100,15 @@ function createFlappyBird(){
         update(){
             
             if(fazColisao(flappyBird, floor) == true){
+                sound_HIT.play();
+
+
+               setTimeout(() => {
                 changeScreen(screen.INITIAL);
+
+               }, 500);
+
+               return;
             };
     
             flappyBird.velocity = this.velocity + this.gravity;
@@ -161,10 +173,11 @@ const screen = {
            },
 
         draw(){
-            background.draw();
-            floor.draw();
-            messageGetReady.draw();
             global.flappyBird.draw();
+            background.draw();
+            messageGetReady.draw();
+            floor.draw();
+
         },
 
         click(){
@@ -182,8 +195,9 @@ screen.GAME = {
     
     draw(){
         background.draw();
-        global.flappyBird.draw()
         floor.draw();
+        global.flappyBird.draw()
+        
         
     },
 
