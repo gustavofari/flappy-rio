@@ -22,31 +22,45 @@ function fazColisao(flappyBird, floor){
 
 
 
-const floor = {
-    sourceX: 0,
-    sourceY: 608,
-    width: 224,
-    height: 112,
-    x: 0,
-    y: canvas.height - 112,
+function createFloor(){
+        const floor = {
+        sourceX: 0,
+        sourceY: 608,
+        width: 224,
+        height: 112,
+        x: 0,
+        y: canvas.height - 112,
 
-    draw(){
-        context.drawImage(
-            sprites,  
-            floor.sourceX, floor.sourceY,     
-            floor.width, floor.height,        
-            floor.x, floor.y,                  
-            floor.width, floor.height         
-        );    
+        update(){
+            const movingFloor = 1.3;
 
-        context.drawImage(
-            sprites,  
-            floor.sourceX, floor.sourceY,     
-            floor.width, floor.height,       
-            (floor.x + floor.width), floor.y, 
-            floor.width, floor.height        
-        );    
-    }
+            floor.x -= movingFloor;
+
+            if(floor.x < -13){
+                floor.x = -1
+            }
+        },
+
+        draw(){
+            context.drawImage(
+                sprites,  
+                floor.sourceX, floor.sourceY,     
+                floor.width, floor.height,        
+                floor.x, floor.y,                  
+                floor.width, floor.height         
+            ),
+
+            context.drawImage(
+                sprites,  
+                floor.sourceX, floor.sourceY,     
+                floor.width, floor.height,       
+                (floor.x + floor.width), floor.y, 
+                floor.width, floor.height        
+            )    
+        }
+    };
+
+    return floor;
 }
 
 const background = {
@@ -76,8 +90,12 @@ const background = {
             (background.x + background.width), background.y,           
             background.width, background.height     
         );    
+    },
+
+    update(){
+        console.log("ola")
     }
-}
+};
 
 
 function createFlappyBird(){
@@ -99,10 +117,10 @@ function createFlappyBird(){
         
         update(){
             
-            if(fazColisao(flappyBird, floor) == true){
+            if(fazColisao(flappyBird, global.floor) == true){
                 sound_HIT.play();
 
-
+                global.floor.x = 0
                setTimeout(() => {
                 changeScreen(screen.INITIAL);
 
@@ -170,13 +188,14 @@ const screen = {
     INITIAL: {
         inicialize(){
             global.flappyBird = createFlappyBird();
+            global.floor = createFloor();
            },
 
         draw(){
-            global.flappyBird.draw();
             background.draw();
+            global.floor.draw();
+            global.flappyBird.draw();
             messageGetReady.draw();
-            floor.draw();
 
         },
 
@@ -186,7 +205,7 @@ const screen = {
         },
 
         update(){
-            
+            global.floor.update();
         }
     }
 };
@@ -195,8 +214,8 @@ screen.GAME = {
     
     draw(){
         background.draw();
-        floor.draw();
-        global.flappyBird.draw()
+        global.floor.draw();
+        global.flappyBird.draw() 
         
         
     },
@@ -208,6 +227,7 @@ screen.GAME = {
 
     update(){
         global.flappyBird.update();
+        global.floor.update();
     },
 
  };
