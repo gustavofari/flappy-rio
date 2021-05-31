@@ -33,24 +33,6 @@ const chao = {
     }
 }
 
-// Bird
-const flappyBird = {
-    spriteX: 0,
-    spriteY: 0,
-    largura: 33,
-    altura: 24,
-    x: 10,
-    y: 50,
-    desenha() {     
-        contexto.drawImage(
-            sprites,  //image 
-            flappyBird.spriteX, flappyBird.spriteY,  //Sprite X, Sprite Y
-            flappyBird.largura, flappyBird.altura,   //sWidth, sHeight  -> Tamanho do recorte na sprite
-            flappyBird.x, flappyBird.y,              //dx, dy, 
-            flappyBird.largura, flappyBird.altura,   //dWidth, dHeight  -> Tamanho do sprite
-        );
-    }
-}
 
 // Fundo (Background)
 const planoDeFundo = {
@@ -82,10 +64,39 @@ const planoDeFundo = {
     }
 };
 
+
+// Bird
+const flappyBird = {
+    spriteX: 0,
+    spriteY: 0,
+    largura: 33,
+    altura: 24,
+    x: 10,
+    y: 50,
+    gravidade: 0.25,
+    velocidade: 0,
+
+    atualiza() {
+        this.velocidade += this.gravidade;
+        this.y += this.velocidade;
+    },
+
+    desenha() {     
+        contexto.drawImage(
+            sprites,  //image 
+            flappyBird.spriteX, flappyBird.spriteY,  //Sprite X, Sprite Y
+            flappyBird.largura, flappyBird.altura,   //sWidth, sHeight  -> Tamanho do recorte na sprite
+            flappyBird.x, flappyBird.y,              //dx, dy, 
+            flappyBird.largura, flappyBird.altura,   //dWidth, dHeight  -> Tamanho do sprite
+        );
+    }
+}
+
 function loop() {
     planoDeFundo.desenha();
-    flappyBird.desenha();
     chao.desenha();
+    flappyBird.desenha();
+    flappyBird.atualiza();
 
 
     requestAnimationFrame(loop);  
