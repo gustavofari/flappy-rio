@@ -7,7 +7,7 @@ const hit = new Audio();
 hit.src = './effects/hit.wav';
 
 const canvas = document.querySelector('canvas'); // Pega o canvas no html
-const contexto = canvas.getContext('2d'); //adiciona um contexto 2d
+const contexto = canvas.getContext('2d');        // adiciona um contexto 2d
 
 // Chão
 const chao = {
@@ -87,8 +87,21 @@ const mensagemGetReady = {
     }
 }
 
+function fazColisao(flappyBird, chao){
+    const flappyBirdY = flappyBird.y + flappyBird.altura;
+    const chaoY = chao.y;
 
-// Bird
+    if(flappyBirdY >= chaoY){
+        return true;
+    }
+    else{
+        return false
+    }
+}
+
+
+function criaFlappyBird(){
+    
 const flappyBird = {
     spriteX: 0,
     spriteY: 0,
@@ -98,25 +111,21 @@ const flappyBird = {
     y: 50,
     gravidade: 0.25,
     velocidade: 0,
-
-    reinicia(){
-        this.y = 50; 
-        this.velocidade = 0;
-    },
-
-    gameover(){
-        if(this.y >= 350){
-            hit.play()
-            mudaParaTela(telas.INICIO)
-        }
-    },
+    pulo: 4.6,
 
     pula() {
-        this.velocidade = 0;
-        this.velocidade -= 5;
+        this.velocidade = - this.pulo; 
     },
 
     atualiza() {
+        if(fazColisao(flappyBird, chao)){
+            hit.play()
+            setTimeout(() => {
+                mudaParaTela(telas.INICIO)
+            }, 500);
+            return;
+        }
+
         this.velocidade += this.gravidade;
         this.y += this.velocidade;
 
@@ -139,28 +148,40 @@ const flappyBird = {
         );
         
     }
+  }
+  return flappyBird;  // Reinicia
 }
+
 
 //
 // Telas
 //
+const globais = {};
 let telaAtiva = {};
 function mudaParaTela(novaTela) {
     telaAtiva = novaTela;
+    
+    if(telaAtiva.inicializa) {
+        telaAtiva.inicializa();
+    }
+
 }
 
 const telas = {
     INICIO: {
+        inicializa(){
+            globais.flappyBird = criaFlappyBird();
+        },
+
         desenha() {
             planoDeFundo.desenha();
             chao.desenha();
-            flappyBird.desenha();
+            globais.flappyBird.desenha();
             mensagemGetReady.desenha();
     
         },
         click() {
             mudaParaTela(telas.JOGO);
-            flappyBird.reinicia()
         },
         atualiza() {
 
@@ -172,17 +193,16 @@ telas.JOGO = {                       // Quando inicia o jogo
     desenha() {
         planoDeFundo.desenha();
         chao.desenha();
-        flappyBird.desenha();
+        globais.flappyBird.desenha();
         
     },
 
     click() {
-        flappyBird.pula();   // função pula
+        globais.flappyBird.pula();   // função pula
     },
 
     atualiza() {
-        flappyBird.atualiza();
-        flappyBird.gameover();
+        globais.flappyBird.atualiza();
         
         
     }
