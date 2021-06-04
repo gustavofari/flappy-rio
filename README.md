@@ -5,5 +5,5 @@
 > Projeto baseado no jogo original **Flappy Bird** mas em uma versão **BR** com algumas outras mudanças!
 > 
 
-  <img alt="Logo do projeto" src="./_docs/logo.png" />
+  <img alt="Logo do projeto" src="./images/logo.png" />
 </p>
